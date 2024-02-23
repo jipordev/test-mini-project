@@ -31,6 +31,22 @@ public class CRUDImpl implements CRUD{
     }
 
     @Override
+    public void readProduct(List<Product> productList) {
+        System.out.print("Enter product code : ");
+        String code = scanner.nextLine();
+        for (Product product : productList) {
+            if (product.getProductCode().equals(code)){
+                System.out.println("#######################################");
+                System.out.println("Product code  : " + product.getProductCode());
+                System.out.println("Product Name  : " + product.getProductName());
+                System.out.println("Product Price : " + product.getProductPrice());
+                System.out.println("Product QTY   : " + product.getQty());
+                System.out.println("Product Date  : " + product.getDate());
+            }
+        }
+    }
+
+    @Override
     public void updateProduct(List<Product> productList) {
         Product updateProduct = new Product();
         System.out.println("""
@@ -70,7 +86,7 @@ public class CRUDImpl implements CRUD{
     }
 
     @Override
-    public void displayProduct(List<Product> productList) {
+    public void displayAllProduct(List<Product> productList) {
         for (Product product : productList) {
             System.out.println("#######################################");
             System.out.println("Product code  : " + product.getProductCode());
@@ -87,7 +103,7 @@ public class CRUDImpl implements CRUD{
         String code = scanner.nextLine();
         for (Product product : productList){
             if (product.getProductCode().contains(code)){
-                displayProduct(productList);
+                displayAllProduct(productList);
             }
         }
     }

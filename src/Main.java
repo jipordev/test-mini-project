@@ -23,14 +23,15 @@ public class Main {
         }};
         do {
             System.out.println("""
-                ##########################################
-                (C)reate (R)ead (D)elete (U)pdate (S)earch
-                ##########################################""");
+                ####################################################
+                (Dis)play (C)reate (R)ead (D)elete (U)pdate (S)earch
+                ####################################################""");
             System.out.print("Please choose options : ");
             String op = scanner.nextLine();
             switch (op){
+                case "dis" -> crud.displayAllProduct(productList);
                 case "c" -> crud.createProduct(productList);
-                case "r" -> crud.displayProduct(productList);
+                case "r" -> crud.readProduct(productList);
                 case "d" -> crud.deleteProduct(productList);
                 case "u" -> crud.updateProduct(productList);
                 case "s" -> crud.searchProductByName(productList);
