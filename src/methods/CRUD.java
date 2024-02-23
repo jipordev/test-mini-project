@@ -5,6 +5,7 @@ import model.Product;
 import java.util.List;
 
 public interface CRUD {
+    List<Product> readProductsFromFile(String fileName);
     void randomRecord(List<Product> productList);
     void createProduct(List<Product> productList);
     void deleteProduct(List<Product> productList);

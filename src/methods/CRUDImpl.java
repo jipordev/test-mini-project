@@ -1,10 +1,17 @@
 package methods;
 
 import model.Product;
+import org.nocrala.tools.texttablefmt.BorderStyle;
+import org.nocrala.tools.texttablefmt.CellStyle;
+import org.nocrala.tools.texttablefmt.ShownBorders;
+import org.nocrala.tools.texttablefmt.Table;
 
+import java.io.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.TreeMap;
 
 public class CRUDImpl implements CRUD{
     static Scanner scanner = new Scanner(System.in);
@@ -33,11 +40,25 @@ public class CRUDImpl implements CRUD{
         System.out.print("Enter NAME : ");
         product.setProductName(scanner.nextLine());
         System.out.print("Enter PRICE : ");
-        product.setProductPrice(Double.parseDouble(scanner.nextLine()));
+        product.setProductPrice(Double.parseDouble(scanner.nextLine()))
+    ;
         System.out.print("Enter QTY : ");
         product.setQty(Integer.parseInt(scanner.nextLine()));
         product.setDate(LocalDate.now());
         productList.add(product);
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("product.bak"))) {
+            for (Product p : productList) {
+                writer.write(p.getProductCode() + "," +
+                        p.getProductName() + "," +
+                        p.getProductPrice() + "," +
+                        p.getQty() + "," +
+                        p.getDate().toString());
+                writer.newLine();
+            }
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
@@ -49,18 +70,26 @@ public class CRUDImpl implements CRUD{
 
     @Override
     public void readProduct(List<Product> productList) {
+        Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER_WIDE,ShownBorders.ALL);
+        CellStyle cellStyle = new CellStyle(CellStyle.HorizontalAlign.center);
         System.out.print("Enter product code : ");
         String code = scanner.nextLine();
+        System.out.println("#######################################");
+        table.addCell("     Product Code     ");
+        table.addCell("     Product Name     ");
+        table.addCell("     Product Price     ");
+        table.addCell("     Product QTY     ");
+        table.addCell("     Product Date     ");
         for (Product product : productList) {
             if (product.getProductCode().equals(code)){
-                System.out.println("#######################################");
-                System.out.println("Product code  : " + product.getProductCode());
-                System.out.println("Product Name  : " + product.getProductName());
-                System.out.println("Product Price : " + product.getProductPrice());
-                System.out.println("Product QTY   : " + product.getQty());
-                System.out.println("Product Date  : " + product.getDate());
+                table.addCell(product.getProductCode(),cellStyle);
+                table.addCell(product.getProductName(),cellStyle);
+                table.addCell(product.getProductPrice().toString(),cellStyle);
+                table.addCell(product.getQty().toString(),cellStyle);
+                table.addCell(product.getDate().toString(),cellStyle);
             }
         }
+        System.out.println(table.render());
     }
 
     @Override
@@ -101,17 +130,51 @@ public class CRUDImpl implements CRUD{
             }
         }
     }
+    public List<Product> readProductsFromFile(String fileName) {
+        List<Product> productList = new ArrayList<>();
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(fileName))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 5) {
+                    Product product = new Product();
+                    product.setProductCode(parts[0].trim());
+                    product.setProductName(parts[1].trim());
+                    product.setProductPrice(Double.parseDouble(parts[2].trim()));
+                    product.setQty(Integer.parseInt(parts[3].trim()));
+                    product.setDate(LocalDate.parse(parts[4].trim())); // Assuming date is stored in ISO_LOCAL_DATE format
+                    productList.add(product);
+                } else {
+                    System.out.println("Invalid data in file: " + line);
+                }
+            }
+        } catch (IOException | NumberFormatException e) {
+            System.out.println("Error reading file: " + e.getMessage());
+        }
+
+        return productList;
+    }
+
 
     @Override
     public void displayAllProduct(List<Product> productList) {
+        Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER_WIDE, ShownBorders.ALL);
+        CellStyle cellStyle = new CellStyle(CellStyle.HorizontalAlign.center);
+        System.out.println("#######################################");
+        table.addCell("     Product Code     ");
+        table.addCell("     Product Name     ");
+        table.addCell("     Product Price     ");
+        table.addCell("     Product QTY     ");
+        table.addCell("     Product Date     ");
         for (Product product : productList) {
-            System.out.println("#######################################");
-            System.out.println("Product code  : " + product.getProductCode());
-            System.out.println("Product Name  : " + product.getProductName());
-            System.out.println("Product Price : " + product.getProductPrice());
-            System.out.println("Product QTY   : " + product.getQty());
-            System.out.println("Product Date  : " + product.getDate());
+            table.addCell(product.getProductCode(),cellStyle);
+            table.addCell(product.getProductName(),cellStyle);
+            table.addCell(product.getProductPrice().toString(),cellStyle);
+            table.addCell(product.getQty().toString(),cellStyle);
+            table.addCell(product.getDate().toString(),cellStyle);
         }
+        System.out.println(table.render());
     }
 
     @Override

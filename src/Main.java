@@ -29,7 +29,10 @@ public class Main {
             System.out.print("Please choose options : ");
             String op = scanner.nextLine();
             switch (op){
-                case "dis" -> crud.displayAllProduct(productList);
+                case "dis" -> {
+                    productList = crud.readProductsFromFile("product.bak");
+                    crud.displayAllProduct(productList);
+                }
                 case "ra" -> crud.randomRecord(productList);
                 case "c" -> crud.createProduct(productList);
                 case "r" -> crud.readProduct(productList);
@@ -37,7 +40,6 @@ public class Main {
                 case "u" -> crud.updateProduct(productList);
                 case "s" -> crud.searchProductByName(productList);
             }
-            System.out.println(productList.size());
         } while (true);
 
     }
