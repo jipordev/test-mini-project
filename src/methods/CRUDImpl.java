@@ -30,6 +30,19 @@ public class CRUDImpl implements CRUD{
             products[i].setDate(LocalDate.now());
         }
         productList.addAll(List.of(products));
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("product.bak",true))){
+            for (Product p : productList) {
+                writer.write(p.getProductCode() + "," +
+                        p.getProductName() + "," +
+                        p.getProductPrice() + "," +
+                        p.getQty() + "," +
+                        p.getDate().toString());
+                writer.newLine();
+            }
+        } catch (IOException e){
+            System.out.println(e.getMessage());
+        }
     }
 
     @Override
@@ -47,7 +60,7 @@ public class CRUDImpl implements CRUD{
         product.setDate(LocalDate.now());
         productList.add(product);
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter("product.bak"))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("product.bak",true))) {
             for (Product p : productList) {
                 writer.write(p.getProductCode() + "," +
                         p.getProductName() + "," +
