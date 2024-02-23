@@ -23,19 +23,22 @@ public class Main {
         }};
         do {
             System.out.println("""
-                ####################################################
-                (Dis)play (C)reate (R)ead (D)elete (U)pdate (S)earch
-                ####################################################""");
+                #############################################################
+                (Dis)play (Ra)ndom (C)reate (R)ead (D)elete (U)pdate (S)earch
+                #############################################################""");
             System.out.print("Please choose options : ");
             String op = scanner.nextLine();
             switch (op){
                 case "dis" -> crud.displayAllProduct(productList);
+                case "ra" -> crud.randomRecord(productList);
                 case "c" -> crud.createProduct(productList);
                 case "r" -> crud.readProduct(productList);
                 case "d" -> crud.deleteProduct(productList);
                 case "u" -> crud.updateProduct(productList);
                 case "s" -> crud.searchProductByName(productList);
             }
+            System.out.println(productList.size());
         } while (true);
+
     }
 }

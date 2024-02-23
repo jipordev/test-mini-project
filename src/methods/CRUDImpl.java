@@ -8,6 +8,23 @@ import java.util.Scanner;
 
 public class CRUDImpl implements CRUD{
     static Scanner scanner = new Scanner(System.in);
+
+    @Override
+    public void randomRecord(List<Product> productList) {
+        System.out.print("Enter amount of record : ");
+        int randomNumber = Integer.parseInt(scanner.nextLine());
+        Product[] products = new Product[randomNumber];
+        for (int i = 0; i<randomNumber; i++) {
+            products[i] = new Product();
+            products[i].setProductCode("CSTAD00"+ i);
+            products[i].setProductName("null");
+            products[i].setProductPrice(0.0);
+            products[i].setQty(0);
+            products[i].setDate(LocalDate.now());
+        }
+        productList.addAll(List.of(products));
+    }
+
     @Override
     public void createProduct(List<Product> productList) {
         Product product = new Product();
