@@ -52,6 +52,8 @@ public class Main {
                     if (confirm.equalsIgnoreCase("y")) {
                         pageSize = newRowSize;
                     }
+
+
                 }
                 case "ra" -> crud.randomRecord(productList);
                 case "c" -> crud.createProduct(productList);
