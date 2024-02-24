@@ -10,10 +10,12 @@ public class Main {
     static CRUDImpl crud = new CRUDImpl();
     static Scanner scanner = new Scanner(System.in);
     public static  void main(String[] args) {
-        int pageNumber =1;
-        int pageSize= crud.setNewRow();
-        List<Product> productList = new ArrayList<>();
+
         do {
+            int pageNumber =1;
+            int pageSize= crud.setNewRow();
+            System.out.println(pageSize);
+            List<Product> productList = new ArrayList<>();
             System.out.println("""
                 #############################################################
                 (Dis)play (Ra)ndom (C)reate (R)ead (D)elete (U)pdate (S)earch

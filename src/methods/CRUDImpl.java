@@ -250,10 +250,10 @@ public class CRUDImpl implements CRUD{
     }
     @Override
     public int setNewRow() {
-        try (BufferedInputStream reader = new BufferedInputStream(new FileInputStream(CONFIG_FILE))) {
-            int line = reader.read();
-            if (line != -1) {
-                return Integer.parseInt(String.valueOf((char) line));
+        try (BufferedReader reader = new BufferedReader(new FileReader(CONFIG_FILE))) {
+            String line = reader.readLine();
+            if (line != null) {
+                return Integer.parseInt(line.trim());
             }
         } catch (IOException | NumberFormatException e) {
             System.out.println(e.getMessage());
@@ -282,12 +282,13 @@ public class CRUDImpl implements CRUD{
     }
     @Override
     public int savePageSize(int pageSize) {
-        try (BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(CONFIG_FILE))) {
-             writer.write(String.valueOf(pageSize).getBytes());
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CONFIG_FILE))) {
+             writer.write(String.valueOf(pageSize));
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         return pageSize;
+
     }
 }
 
