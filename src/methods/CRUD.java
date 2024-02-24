@@ -11,6 +11,8 @@ public interface CRUD {
     void deleteProduct(List<Product> productList);
     void readProduct(List<Product> productList);
     void updateProduct(List<Product> productList);
-    void displayAllProduct(List<Product> productList);
+    int displayAllProduct(List<Product> productList, int pageNumber, int pageSize);
     void searchProductByName(List<Product> productList);
+    int setNewRow(int pageNumber, int pageSize,String confirm);
+
 }
