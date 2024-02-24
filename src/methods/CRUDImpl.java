@@ -165,49 +165,45 @@ public class CRUDImpl implements CRUD{
 
         return productList;
     }
-
     @Override
     public int displayAllProduct(List<Product> productList, int pageNumber, int pageSize) {
-        int startIndex = (pageNumber - 1) * pageSize;
-        int endIndex = Math.min(startIndex + pageSize, productList.size());
-        Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER_WIDE, ShownBorders.ALL);
-        CellStyle cellStyle = new CellStyle(CellStyle.HorizontalAlign.center);
-        System.out.println("#######################################");
-        table.addCell("     Product Code     ");
-        table.addCell("     Product Name     ");
-        table.addCell("     Product Price     ");
-        table.addCell("     Product QTY     ");
-        table.addCell("     Product Date     ");
-        for (int i = startIndex; i < endIndex; i++) {
-            Product product = productList.get(i);
-            table.addCell(product.getProductCode(), cellStyle);
-            table.addCell(product.getProductName(), cellStyle);
-            table.addCell(product.getProductPrice().toString(), cellStyle);
-            table.addCell(product.getQty().toString(), cellStyle);
-            table.addCell(product.getDate().toString(), cellStyle);
-        }
-        System.out.println(table.render());
-        System.out.println("o" + "~".repeat(125) + "o");
-        int totalPage = productList.size() / pageSize;
-        System.out.printf("Page: %d of %d \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t   Total Records: %d%n", pageNumber, totalPage, productList.size());
-        System.out.printf("Page Navigation\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t(F)irst  (P)revious  (G)oto  (N)ext  (L)ast \n");
-        System.out.println("o" + "~".repeat(125) + "o");
-        System.out.print(">(B)ack or Navigate Page :  ");
-        String option = scanner.nextLine().toLowerCase();
-        boolean continueLoop = true;
-        while (continueLoop) {
+        boolean isTrue;
+        do {
+            int startIndex = (pageNumber - 1) * pageSize;
+            int endIndex = Math.min(startIndex + pageSize, productList.size());
+            Table table = new Table(5, BorderStyle.UNICODE_BOX_DOUBLE_BORDER_WIDE, ShownBorders.ALL);
+            CellStyle cellStyle = new CellStyle(CellStyle.HorizontalAlign.center);
+            System.out.println("#######################################");
+            table.addCell("     Product Code     ");
+            table.addCell("     Product Name     ");
+            table.addCell("     Product Price     ");
+            table.addCell("     Product QTY     ");
+            table.addCell("     Product Date     ");
+            for (int i = startIndex; i < endIndex; i++) {
+                Product product = productList.get(i);
+                table.addCell(product.getProductCode(), cellStyle);
+                table.addCell(product.getProductName(), cellStyle);
+                table.addCell(product.getProductPrice().toString(), cellStyle);
+                table.addCell(product.getQty().toString(), cellStyle);
+                table.addCell(product.getDate().toString(), cellStyle);
+            }
+            System.out.println(table.render());
+            System.out.println("o" + "~".repeat(125) + "o");
+            int totalPage = productList.size() / pageSize;
+            System.out.printf("Page: %d of %d \t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t   Total Records: %d%n", pageNumber, totalPage, productList.size());
+            System.out.printf("Page Navigation\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t(F)irst  (P)revious  (G)oto  (N)ext  (L)ast \n");
+            System.out.println("o" + "~".repeat(125) + "o");
+            String option;
+            isTrue = true;
+            System.out.print(">(B)ack or Navigate Page :  ");
+            option = scanner.nextLine().toLowerCase();
             switch (option) {
-                case "b" -> {
-                    continueLoop = false;
-                }
                 case "f" -> {
                     pageNumber = 1;
-                    displayAllProduct(productList, pageNumber, pageSize);
                 }
                 case "p" -> {
                     if (pageNumber > 1) {
                         pageNumber--;
-                        displayAllProduct(productList, pageNumber, pageSize);
                     }
                 }
                 case "g" -> {
@@ -216,7 +212,6 @@ public class CRUDImpl implements CRUD{
                         int pageNo = Integer.parseInt(scanner.nextLine());
                         if (pageNo >= 1 && pageNo <= productList.size() / pageSize) {
                             pageNumber = pageNo;
-                            displayAllProduct(productList, pageNumber, pageSize);
                         } else {
                             System.out.println("Invalid page number.");
                         }
@@ -227,19 +222,19 @@ public class CRUDImpl implements CRUD{
                 case "n" -> {
                     if (pageNumber < productList.size() / pageSize) {
                         pageNumber++;
-                        displayAllProduct(productList, pageNumber, pageSize);
                     }
                 }
                 case "l" -> {
                     pageNumber = productList.size() / pageSize;
-                    displayAllProduct(productList, pageNumber, pageSize);
+                }
+                case "b" -> {
+                    isTrue = false;
                 }
                 default -> {
                     System.out.println("Invalid Option.");
-                   continueLoop = false;
                 }
             }
-        }
+        } while (isTrue);
         return pageSize;
     }
 
