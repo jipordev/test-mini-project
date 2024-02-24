@@ -13,6 +13,7 @@ import java.util.*;
 
 public class CRUDImpl implements CRUD{
     static Scanner scanner = new Scanner(System.in);
+    private static final String CONFIG_FILE = "config.bak";
 
     @Override
     public void randomRecord(List<Product> productList) {
@@ -237,7 +238,6 @@ public class CRUDImpl implements CRUD{
         } while (isTrue);
         return pageSize;
     }
-
     @Override
     public void searchProductByName(List<Product> productList) {
         System.out.print("Enter product code : ");
@@ -249,12 +249,45 @@ public class CRUDImpl implements CRUD{
         }
     }
     @Override
-    public int setNewRow( int pageNumber, int pageSize,String confirm) {
-        System.out.println(pageSize);
-        if (confirm.equals("y")) {
-            return  pageSize;
+    public int setNewRow() {
+        try (BufferedInputStream reader = new BufferedInputStream(new FileInputStream(CONFIG_FILE))) {
+            int line = reader.read();
+            if (line != -1) {
+                return Integer.parseInt(String.valueOf((char) line));
+            }
+        } catch (IOException | NumberFormatException e) {
+            System.out.println(e.getMessage());
         }
-        else
-            return 10;
+        return 10;
+    }
+    @Override
+    public void setPageSize(Scanner scanner) {
+        System.out.println("#".repeat(20));
+        System.out.println("Set Row to Display in Table");
+        int newRowSize;
+        do {
+            System.out.print("Enter Row (greater than 0): ");
+            while (!scanner.hasNextInt()) {
+                System.out.println("Invalid input. Please enter a valid integer.");
+                scanner.next();
+            }
+            newRowSize = scanner.nextInt();
+            scanner.nextLine();
+        } while (newRowSize <= 0);
+        System.out.print("Do you want to set new row size (Y/N): ");
+        String confirm = scanner.nextLine();
+        if (confirm.equalsIgnoreCase("y")) {
+            savePageSize(newRowSize);
+        }
+    }
+    @Override
+    public int savePageSize(int pageSize) {
+        try (BufferedOutputStream writer = new BufferedOutputStream(new FileOutputStream(CONFIG_FILE))) {
+             writer.write(String.valueOf(pageSize).getBytes());
+        } catch (IOException e) {
+            System.out.println(e.getMessage());
+        }
+        return pageSize;
     }
 }
+

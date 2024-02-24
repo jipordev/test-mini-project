@@ -3,6 +3,7 @@ package methods;
 import model.Product;
 
 import java.util.List;
+import java.util.Scanner;
 
 public interface CRUD {
     List<Product> readProductsFromFile(String fileName);
@@ -13,6 +14,8 @@ public interface CRUD {
     void updateProduct(List<Product> productList);
     int displayAllProduct(List<Product> productList, int pageNumber, int pageSize);
     void searchProductByName(List<Product> productList);
-    int setNewRow(int pageNumber, int pageSize,String confirm);
+    int setNewRow();
+    void setPageSize(Scanner scanner);
+    int savePageSize(int pageSize);
 
 }
