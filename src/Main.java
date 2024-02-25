@@ -10,11 +10,9 @@ public class Main {
     static CRUDImpl crud = new CRUDImpl();
     static Scanner scanner = new Scanner(System.in);
     public static  void main(String[] args) {
-
         do {
             int pageNumber =1;
             int pageSize= crud.setNewRow();
-            System.out.println(pageSize);
             List<Product> productList = new ArrayList<>();
             System.out.println("""
                 #############################################################
@@ -27,9 +25,7 @@ public class Main {
                     productList = crud.readProductsFromFile("product.bak");
                     crud.displayAllProduct(productList, pageNumber, pageSize);
                 }
-                case "o" -> {
-                    crud.setPageSize(scanner);
-                }
+                case "o" -> crud.setPageSize(scanner);
                 case "ra" -> crud.randomRecord(productList);
                 case "c" -> crud.createProduct(productList);
                 case "r" -> crud.readProduct(productList);

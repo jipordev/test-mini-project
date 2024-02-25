@@ -60,14 +60,14 @@ public class CRUDImpl implements CRUD{
         productList.add(product);
 
         try (BufferedWriter writer = new BufferedWriter(new FileWriter("product.bak",true))) {
-            for (Product p : productList) {
-                writer.write(p.getProductCode() + "," +
-                        p.getProductName() + "," +
-                        p.getProductPrice() + "," +
-                        p.getQty() + "," +
-                        p.getDate().toString());
-                writer.newLine();
-            }
+
+                writer.write(product.getProductCode() + "," +
+                        product.getProductName() + "," +
+                        product.getProductPrice() + "," +
+                        product.getQty() + "," +
+                        product.getDate().toString());
+                        writer.newLine();
+
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
